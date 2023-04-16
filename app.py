@@ -24,45 +24,35 @@ class SmartHome:
         self.__light_off = ImageTk.PhotoImage(re_light_off)
         self.__light_on = ImageTk.PhotoImage(re_light_on)
 
+        self.light_btns = ["btn1", "btn2", "btn3", "btn4", "btn5"]
+        self.light_states = ["light1", "light2", "light3", "light4", "light5"]
+
     def light_control_interface(self):
         self.btn_group = LabelFrame(self.root, text='Light Controls', background='#ECBFEA')
         self.btn_group.grid(row=0, column=0, padx=10, pady=10)
-        self.btn = Button(self.btn_group, image=self.__img_on, command=self.on)
-        self.btn.grid(row=0, column=0, padx=10, pady=10)
-        self.light = Label(self.btn_group,image=self.__light_off)
-        self.light.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn1 = Button(self.btn_group, image=self.__img_on, command=self.on)
-        self.btn1.grid(row=1, column=0, padx=10, pady=10)
-        self.light1 = Label(self.btn_group,image=self.__light_off)
-        self.light1.grid(row=1, column=1, padx=10, pady=10)
+        for i in range(5):
+            self.light_btns[i] = Button()
+            self.light_states[i] = Label()
+            self.light_btns[i] = Button(self.btn_group, image=self.__img_on, command=lambda idx=i: self.on(idx))
+            self.light_btns[i].grid(row=i, column=0, padx=10, pady=10)
+            self.light_states[i] = Label(self.btn_group, image=self.__light_off)
+            self.light_states[i].grid(row=i, column=1, padx=10, pady=10)
 
-        self.btn2 = Button(self.btn_group, image=self.__img_on, command=self.on)
-        self.btn2.grid(row=2, column=0, padx=10, pady=10)
-        self.light2 = Label(self.btn_group,image=self.__light_off)
-        self.light2.grid(row=2, column=1, padx=10, pady=10)
-
-        self.btn3 = Button(self.btn_group, image=self.__img_on, command=self.on)
-        self.btn3.grid(row=3, column=0, padx=10, pady=10)
-        self.light3 = Label(self.btn_group,image=self.__light_off)
-        self.light3.grid(row=3, column=1, padx=10, pady=10)
-
-        self.btn4 = Button(self.btn_group, image=self.__img_on, command=self.on)
-        self.btn4.grid(row=4, column=0, padx=10, pady=10)
-        self.light4 = Label(self.btn_group,image=self.__light_off)
-        self.light4.grid(row=4, column=1, padx=10, pady=10)
     def fan_control_interface(self):
         pass
     def door_control_interface(self):
         pass
     def view_interface(self):
         pass
-    def on(self):
-        self.btn.configure(image=self.__img_off,command=self.off)
-        self.light.configure(image=self.__light_on)
-    def off(self):
-        self.btn.configure(image=self.__img_on, command=self.on)
-        self.light.configure(image=self.__light_off)
+    def on(self, index):
+        # print(type(self.light_btns[index]))
+        self.light_btns[index].configure(image=self.__img_off,command=lambda idx=index: self.off(idx)) # lỗi do truyền self.off[idx]
+        self.light_states[index].configure(image=self.__light_on)
+    def off(self, index):
+        # print(type(self.light_btns[index]))
+        self.light_btns[index].configure(image=self.__img_on, command=lambda idx=index: self.on(idx))
+        self.light_states[index].configure(image=self.__light_off)
         
 smartHome = SmartHome()
 smartHome.light_control_interface()
